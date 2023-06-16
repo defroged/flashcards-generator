@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Generator</title>
+</head>
+<body>
+    <h1>Flashcard Generator</h1>
+    <form id="image-form">
+        <label for="flashcard-text">Flashcard Text:</label>
+        <input type="text" id="flashcard-text" name="flashcard-text" required>
+
+        <label for="image-prompt">Image Prompt:</label>
+        <input type="text" id="image-prompt" name="image-prompt" required>
+
+        <input type="submit" value="Generate Image">
+    </form>
+    <div id="image-container"></div>
+    <script src="script.js"></script>
+</body>
+</html>
