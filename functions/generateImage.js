@@ -6,7 +6,7 @@ exports.handler = async function(event, context) {
     }
 
     const { prompt } = JSON.parse(event.body);
-    const response = await fetch('https://api.openai.com/v1/dalle/create', {
+    const response = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
