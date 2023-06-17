@@ -2,7 +2,8 @@ document.getElementById('image-form').addEventListener('submit', async (event) =
     event.preventDefault();
     
     const flashcardText = document.getElementById('flashcard-text').value;
-    const imagePrompt = document.getElementById('image-prompt').value;
+    const imagePrompt = document.getElementById('image-prompt').value + ' clipart';
+
 
     const response = await fetch('/.netlify/functions/generateImage', {
         method: 'POST',
