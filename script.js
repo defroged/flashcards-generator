@@ -13,6 +13,8 @@ document.getElementById('image-form').addEventListener('submit', async (event) =
         body: JSON.stringify({ prompt: imagePrompt })
     });
     const data = await response.json();
+	console.log(data);
+
 
     const img = document.createElement('img');
     img.src = data.url;
