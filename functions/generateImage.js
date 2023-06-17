@@ -6,16 +6,18 @@ exports.handler = async function(event, context) {
     }
 
     const { prompt } = JSON.parse(event.body);
-    const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+    const response = await fetch('https://api.openai.com/v1/dalle/create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
         },
         body: JSON.stringify({
-            'prompt': prompt,
-            'max_tokens': 60
-        })
+    'prompt': prompt + " clipart",
+    'n': 1,
+    'size': '512x512'
+})
+
     });
     const data = await response.json();
 
