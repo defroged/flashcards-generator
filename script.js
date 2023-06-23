@@ -4,7 +4,6 @@ document.getElementById('image-form').addEventListener('submit', async (event) =
     const flashcardText = document.getElementById('flashcard-text').value;
     const imagePrompt = document.getElementById('image-prompt').value + ' clipart';
 
-
     const response = await fetch('/.netlify/functions/generateImage', {
         method: 'POST',
         headers: {
@@ -13,11 +12,16 @@ document.getElementById('image-form').addEventListener('submit', async (event) =
         body: JSON.stringify({ prompt: imagePrompt })
     });
     const data = await response.json();
-	console.log(data);
-
+    console.log(data);
 
     const img = document.createElement('img');
-img.src = data.data.data[0].url;
+
+    if (data.data && data.data.data && data.data.data.length > 0) {
+        img.src = data.data.data[0].url;
+    } else {
+        console.error('Unexpected API response', data);
+    }
+
     img.alt = flashcardText;
 
     document.getElementById('image-container').appendChild(img);
