@@ -17,7 +17,7 @@ document.getElementById('image-form').addEventListener('submit', async (event) =
 
 
     const img = document.createElement('img');
-    img.src = data.url;
+img.src = data.data.data[0].url;
     img.alt = flashcardText;
 
     document.getElementById('image-container').appendChild(img);
