@@ -22,16 +22,19 @@ window.onload = function() {
     });
 
     document.getElementById('save-pdf').addEventListener('click', function() {
-        const flashcard = document.getElementById('flashcard');
-        const pdf = new window.jspdf.jsPDF();
+    const flashcard = document.getElementById('flashcard');
+    const printSize = document.getElementById('print-size').value.toUpperCase(); // fetch the user's choice
 
-        // Capture the flashcard and add it to the PDF
-        pdf.html(flashcard, {
-            callback: function (pdf) {
-                pdf.save('flashcard.pdf');
-            },
-            x: 10,
-            y: 10
-        });
+    const pdf = new jsPDF('p', 'mm', printSize); // use user's choice here
+
+    // Capture the flashcard and add it to the PDF
+    pdf.html(flashcard, {
+        callback: function (pdf) {
+            pdf.save('flashcard.pdf');
+        },
+        x: 10,
+        y: 10
     });
+});
+
 }
