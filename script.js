@@ -27,13 +27,7 @@ document.getElementById('image-form').addEventListener('submit', async (event) =
 });
 
 document.getElementById('save-pdf').addEventListener('click', function() {
-    var printSize = document.getElementById('print-size').value;
-    var flashcard = document.getElementById('flashcard');
-    var pdf = new jsPDF('p', 'mm', printSize.toUpperCase());
-
-    pdf.html(flashcard, {
-        callback: function (pdf) {
-            pdf.save('flashcard.pdf');
-        }
-    });
+    var pdf = new jsPDF();
+    pdf.text('Hello world!', 10, 10);
+    pdf.save('simple.pdf');
 });
