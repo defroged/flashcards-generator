@@ -14,9 +14,23 @@
         <label for="image-prompt">Image Prompt:</label>
         <input type="text" id="image-prompt" name="image-prompt" required>
 
+        <label for="print-size">Print Size:</label>
+        <select id="print-size">
+            <option value="a4">A4</option>
+            <option value="b5">B5</option>
+            <option value="a5">A5</option>
+        </select>
+
         <input type="submit" value="Generate Image">
     </form>
-    <div id="image-container"></div>
+    <div id="flashcard-container">
+        <div id="flashcard">
+            <p id="flashcard-text-display"></p>
+            <div id="image-container"></div>
+        </div>
+    </div>
+    <button id="save-pdf">Save as PDF</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

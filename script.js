@@ -19,8 +19,21 @@ document.getElementById('image-form').addEventListener('submit', async (event) =
         img.src = data.data[0].url;
         img.alt = flashcardText;
 
+        document.getElementById('flashcard-text-display').textContent = flashcardText;
         document.getElementById('image-container').appendChild(img);
     } else {
         console.error('No image URL found in API response');
     }
+});
+
+document.getElementById('save-pdf').addEventListener('click', function() {
+    var printSize = document.getElementById('print-size').value;
+    var flashcard = document.getElementById('flashcard');
+    var pdf = new jsPDF('p', 'mm', printSize.toUpperCase());
+
+    pdf.html(flashcard, {
+        callback: function (pdf) {
+            pdf.save('flashcard.pdf');
+        }
+    });
 });
