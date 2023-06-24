@@ -18,7 +18,7 @@ document.getElementById('image-form').addEventListener('submit', async (event) =
     */
 
     // Use a mock image URL
-    const mockImageUrl = "https://app.box.com/s/5p8eza2tymil7psfduynhf8tioy1jhit";
+    const mockImageUrl = "https://www.bluestar-english.com/wp-content/uploads/2023/06/mock.png";
 
     const img = document.createElement('img');
     img.src = mockImageUrl;
