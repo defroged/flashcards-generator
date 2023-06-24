@@ -12,17 +12,15 @@ document.getElementById('image-form').addEventListener('submit', async (event) =
         body: JSON.stringify({ prompt: imagePrompt })
     });
     const data = await response.json();
-    console.log(data);
+    console.log('Unexpected API response ', data);
 
-    const img = document.createElement('img');
+    if (data && data.data && data.data.length > 0) {
+        const img = document.createElement('img');
+        img.src = data.data[0].url;
+        img.alt = flashcardText;
 
-    if (data.data && data.data.data && data.data.data.length > 0) {
-        img.src = data.data.data[0].url;
+        document.getElementById('image-container').appendChild(img);
     } else {
-        console.error('Unexpected API response', data);
+        console.error('No image URL found in API response');
     }
-
-    img.alt = flashcardText;
-
-    document.getElementById('image-container').appendChild(img);
 });
