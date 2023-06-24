@@ -23,7 +23,7 @@ window.onload = function() {
 
     document.getElementById('save-pdf').addEventListener('click', function() {
         const flashcard = document.getElementById('flashcard');
-        const pdf = new jsPDF();
+        const pdf = new window.jspdf.jsPDF();
 
         // Capture the flashcard and add it to the PDF
         pdf.html(flashcard, {
