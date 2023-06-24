@@ -9,6 +9,21 @@
         max-width: 100%;
         height: auto;
     }
+    #flashcard {
+        width: 90%;
+        height: 50vh;
+        border: 1px solid #000;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        margin: 2em auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        text-align: center;
+    }
+    #flashcard-text-display {
+        font-size: 1.5em;
+    }
 </style>
 
 </head>
@@ -28,12 +43,12 @@
             <option value="a5">A5</option>
         </select>
 
-        <input type="submit" value="Generate Image">
+        <input type="submit" value="Generate Flashcard">
     </form>
     <div id="flashcard-container">
         <div id="flashcard">
-            <p id="flashcard-text-display"></p>
             <div id="image-container"></div>
+            <p id="flashcard-text-display"></p>
         </div>
     </div>
     <button id="save-pdf">Save as PDF</button>
