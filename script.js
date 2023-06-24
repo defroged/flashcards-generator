@@ -4,6 +4,8 @@ document.getElementById('image-form').addEventListener('submit', async (event) =
     const flashcardText = document.getElementById('flashcard-text').value;
     const imagePrompt = document.getElementById('image-prompt').value + ' clipart';
 
+    // Comment out the API call and use a mock image instead
+    /*
     const response = await fetch('/.netlify/functions/generateImage', {
         method: 'POST',
         headers: {
@@ -13,17 +15,17 @@ document.getElementById('image-form').addEventListener('submit', async (event) =
     });
     const data = await response.json();
     console.log('Unexpected API response ', data);
+    */
 
-    if (data && data.data && data.data.length > 0) {
-        const img = document.createElement('img');
-        img.src = data.data[0].url;
-        img.alt = flashcardText;
+    // Use a mock image URL
+    const mockImageUrl = "https://app.box.com/s/5p8eza2tymil7psfduynhf8tioy1jhit";
 
-        document.getElementById('flashcard-text-display').textContent = flashcardText;
-        document.getElementById('image-container').appendChild(img);
-    } else {
-        console.error('No image URL found in API response');
-    }
+    const img = document.createElement('img');
+    img.src = mockImageUrl;
+    img.alt = flashcardText;
+
+    document.getElementById('flashcard-text-display').textContent = flashcardText;
+    document.getElementById('image-container').appendChild(img);
 });
 
 document.getElementById('save-pdf').addEventListener('click', function() {
