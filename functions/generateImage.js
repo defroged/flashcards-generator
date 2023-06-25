@@ -6,7 +6,9 @@ exports.handler = async function(event, context) {
     }
 
     const { prompt } = JSON.parse(event.body);
+
     try {
+        console.log('Sending request to OpenAI API...');
         const response = await fetch('https://api.openai.com/v1/images/generations', {
             method: 'POST',
             headers: {
@@ -21,27 +23,28 @@ exports.handler = async function(event, context) {
 
         });
         const data = await response.json();
-        console.log('API response: ', data);
+        console.log('Received response from OpenAI API:', data);
 
         if (data.choices && data.choices.length > 0) {
             // Extract the base64-encoded image from the API response
-            const base64Image = data.choices[0].image;
-
+            const base64Image = data.choices[0].image.data;
+    
             return {
                 statusCode: 200,
                 body: JSON.stringify({ imageUrl: `data:image/png;base64,${base64Image}` })
             };
         }
 
+        console.log('No image data in API response.');
         return {
             statusCode: 500,
             body: "Image generation failed"
         };
     } catch (error) {
-        console.error('Error: ', error);
+        console.error('Error during image generation:', error);
         return {
             statusCode: 500,
-            body: `Error: ${error.message}`
+            body: `Error during image generation: ${error.toString()}`
         };
     }
 };
