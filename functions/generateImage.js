@@ -23,7 +23,7 @@ exports.handler = async function(event, context) {
 
     if (data.choices && data.choices.length > 0) {
         // Extract the base64-encoded image from the API response
-        const base64Image = data.choices[0].image.data;
+        const base64Image = data.choices[0].image;
 
         return {
             statusCode: 200,
