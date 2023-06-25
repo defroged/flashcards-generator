@@ -7,7 +7,7 @@ window.onload = function() {
         const printSize = document.getElementById('print-size').value;
 
         // Set this to true to use the mock image, false to call the API
-        const useMockImage = flase;
+        const useMockImage = false;
 
         let imageUrl;
         if (useMockImage) {
