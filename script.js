@@ -12,7 +12,8 @@ window.onload = function() {
         let imageUrl;
         if (useMockImage) {
             // Use a mock image URL
-            imageUrl = "https://www.bluestar-english.com/wp-content/uploads/2023/06/mock.png";
+            imageUrl = "/mock.png";
+
         } else {
             // Call the API to generate an image
             const response = await fetch('/.netlify/functions/generateImage', {
