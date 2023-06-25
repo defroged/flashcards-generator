@@ -6,11 +6,28 @@ window.onload = function() {
         const imagePrompt = document.getElementById('image-prompt').value + ' clipart';
         const printSize = document.getElementById('print-size').value;
 
-        // Use a mock image URL
-        const mockImageUrl = "https://www.bluestar-english.com/wp-content/uploads/2023/06/mock.png";
+        // Set this to true to use the mock image, false to call the API
+        const useMockImage = true;
+
+        let imageUrl;
+        if (useMockImage) {
+            // Use a mock image URL
+            imageUrl = "https://www.bluestar-english.com/wp-content/uploads/2023/06/mock.png";
+        } else {
+            // Call the API to generate an image
+            const response = await fetch('/.netlify/functions/generateImage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt: imagePrompt })
+            });
+            const data = await response.json();
+            imageUrl = data.imageUrl;
+        }
 
         const img = document.createElement('img');
-        img.src = mockImageUrl;
+        img.src = imageUrl;
         img.alt = flashcardText;
 
         const flashcard = document.getElementById('flashcard');
@@ -22,34 +39,32 @@ window.onload = function() {
     });
 
     document.getElementById('save-pdf').addEventListener('click', function() {
-    const flashcard = document.getElementById('flashcard');
-    const printSize = document.getElementById('print-size').value.toUpperCase();
+        const flashcard = document.getElementById('flashcard');
+        const printSize = document.getElementById('print-size').value.toUpperCase();
 
-    // Create a new jsPDF instance with the correct format
-    const pdf = new window.jspdf.jsPDF({
-        orientation: 'landscape',
-        format: printSize
+        // Create a new jsPDF instance with the correct format
+        const pdf = new window.jspdf.jsPDF({
+            orientation: 'landscape',
+            format: printSize
+        });
+
+        // Use html2canvas to convert the flashcard to a canvas
+        html2canvas(flashcard).then(canvas => {
+            // Convert the canvas to an image
+            const imgData = canvas.toDataURL('image/png');
+
+            // Calculate the ratio of the flashcard's width to its height
+            const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
+
+            // Calculate the width and height of the image in the PDF
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdfWidth / ratio;
+
+            // Add the image to the PDF
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+            // Save the PDF
+            pdf.save('flashcard.pdf');
+        });
     });
-
-    // Use html2canvas to convert the flashcard to a canvas
-    html2canvas(flashcard).then(canvas => {
-        // Convert the canvas to an image
-        const imgData = canvas.toDataURL('image/png');
-
-        // Calculate the ratio of the flashcard's width to its height
-        const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
-
-        // Calculate the width and height of the image in the PDF
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdfWidth / ratio;
-
-        // Add the image to the PDF
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-
-        // Save the PDF
-        pdf.save('flashcard.pdf');
-    });
-});
-
-
 }
