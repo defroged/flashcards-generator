@@ -27,11 +27,13 @@ window.onload = function() {
 
         // Capture the flashcard and add it to the PDF
         pdf.html(flashcard, {
-            callback: function (pdf) {
-                pdf.save('flashcard.pdf');
-            },
-            x: 10,
-            y: 10
-        });
+    callback: function (pdf) {
+        pdf.save('flashcard.pdf');
+    },
+    x: 10,
+    y: 10,
+    scale: 1.5 // Increase the size of the flashcard by 50%
+});
+
     });
 }
