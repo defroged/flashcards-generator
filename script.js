@@ -7,7 +7,7 @@ window.onload = function() {
         const printSize = document.getElementById('print-size').value;
 
         // Set this to true to use the mock image, false to call the API
-        const useMockImage = false;
+        const useMockImage = true;
 
         let imageUrl;
         if (useMockImage) {
@@ -30,12 +30,14 @@ window.onload = function() {
         img.src = imageUrl;
         img.alt = flashcardText;
 
-        const flashcard = document.getElementById('flashcard');
-        flashcard.className = printSize;
+        img.onload = function() {
+            const flashcard = document.getElementById('flashcard');
+            flashcard.className = printSize;
 
-        document.getElementById('flashcard-text-display').textContent = flashcardText;
-        document.getElementById('image-container').innerHTML = ''; // clear any previous image
-        document.getElementById('image-container').appendChild(img);
+            document.getElementById('flashcard-text-display').textContent = flashcardText;
+            document.getElementById('image-container').innerHTML = ''; // clear any previous image
+            document.getElementById('image-container').appendChild(img);
+        };
     });
 
     document.getElementById('save-pdf').addEventListener('click', function() {
