@@ -13,7 +13,6 @@ window.onload = function() {
         if (useMockImage) {
             // Use a mock image URL
             imageUrl = "/public/mock.png";
-
         } else {
             // Call the API to generate an image
             const response = await fetch('/.netlify/functions/generateImage', {
@@ -51,23 +50,32 @@ window.onload = function() {
             format: printSize
         });
 
-        // Use html2canvas to convert the flashcard to a canvas
-        html2canvas(flashcard).then(canvas => {
-            // Convert the canvas to an image
-            const imgData = canvas.toDataURL('image/png');
+        // Get the image and text separately
+        const imgElement = document.querySelector('#image-container img');
+        const textElement = document.getElementById('flashcard-text-display');
 
-            // Calculate the ratio of the flashcard's width to its height
-            const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
+        // Convert the image to a data URL
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = imgElement.width;
+        canvas.height = imgElement.height;
+        ctx.drawImage(imgElement, 0, 0);
+        const imgData = canvas.toDataURL('image/png');
 
-            // Calculate the width and height of the image in the PDF
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdfWidth / ratio;
+        // Calculate the ratio of the image's width to its height
+        const ratio = imgElement.width / imgElement.height;
 
-            // Add the image to the PDF
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        // Calculate the width and height of the image in the PDF
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdfWidth / ratio;
 
-            // Save the PDF
-            pdf.save('flashcard.pdf');
-        });
+        // Add the image to the PDF
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+        // Add the text to the PDF
+        pdf.text(textElement.textContent, 10, 10); // adjust these coordinates as needed
+
+        // Save the PDF
+        pdf.save('flashcard.pdf');
     });
 }
