@@ -27,18 +27,29 @@ window.onload = function() {
 
     // Create a new jsPDF instance with the correct format
     const pdf = new window.jspdf.jsPDF({
-		    orientation: 'landscape',
+        orientation: 'landscape',
         format: printSize
     });
 
-    // Capture the flashcard and add it to the PDF
-    pdf.html(flashcard, {
-        callback: function (pdf) {
-            pdf.save('flashcard.pdf');
-        },
-        x: 10,
-        y: 10
+    // Use html2canvas to convert the flashcard to a canvas
+    html2canvas(flashcard).then(canvas => {
+        // Convert the canvas to an image
+        const imgData = canvas.toDataURL('image/png');
+
+        // Calculate the ratio of the flashcard's width to its height
+        const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
+
+        // Calculate the width and height of the image in the PDF
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdfWidth / ratio;
+
+        // Add the image to the PDF
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+        // Save the PDF
+        pdf.save('flashcard.pdf');
     });
 });
+
 
 }
