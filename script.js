@@ -27,6 +27,7 @@ window.onload = function() {
 
     // Create a new jsPDF instance with the correct format
     const pdf = new window.jspdf.jsPDF({
+		    orientation: 'landscape',
         format: printSize
     });
 
