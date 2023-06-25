@@ -7,44 +7,42 @@ exports.handler = async function(event, context) {
 
     const { prompt } = JSON.parse(event.body);
 
-    try {
-        console.log('Sending request to OpenAI API...');
-        const response = await fetch('https://api.openai.com/v1/images/generations', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
-                'prompt': prompt + " clipart",
-                'n': 1,
-                'size': '512x512'
-            })
+    console.info('Sending request to OpenAI API...');
+    const response = await fetch('https://api.openai.com/v1/images/generations', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+            'prompt': prompt,
+            'n': 1,
+            'size': '512x512'
+        })
+    });
 
-        });
-        const data = await response.json();
-        console.log('Received response from OpenAI API:', data);
+    console.info('Received response from OpenAI API:', await response.text());
 
-        if (data.choices && data.choices.length > 0) {
-            // Extract the base64-encoded image from the API response
-            const base64Image = data.choices[0].image.data;
-    
-            return {
-                statusCode: 200,
-                body: JSON.stringify({ imageUrl: `data:image/png;base64,${base64Image}` })
-            };
-        }
+    if (!response.ok) {
+        console.error('Failed to generate image:', response.statusText);
+        return { statusCode: 500, body: "Image generation failed: " + response.statusText };
+    }
 
-        console.log('No image data in API response.');
+    const data = await response.json();
+
+    if (data.data && data.data.length > 0) {
+        // Extract the URL of the image from the API response
+        const imageUrl = data.data[0].url;
+
         return {
-            statusCode: 500,
-            body: "Image generation failed"
-        };
-    } catch (error) {
-        console.error('Error during image generation:', error);
-        return {
-            statusCode: 500,
-            body: `Error during image generation: ${error.toString()}`
+            statusCode: 200,
+            body: JSON.stringify({ imageUrl: imageUrl })
         };
     }
+
+    console.error('No image URL in API response.');
+    return {
+        statusCode: 500,
+        body: "Image generation failed: No image URL in API response."
+    };
 };
