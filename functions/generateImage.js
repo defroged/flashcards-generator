@@ -13,16 +13,26 @@ exports.handler = async function(event, context) {
             'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
         },
         body: JSON.stringify({
-    'prompt': prompt + " clipart",
-    'n': 1,
-    'size': '512x512'
-})
+            'prompt': prompt + " clipart",
+            'n': 1,
+            'size': '512x512'
+        })
 
     });
     const data = await response.json();
 
+    if (data.choices && data.choices.length > 0) {
+        // Extract the base64-encoded image from the API response
+        const base64Image = data.choices[0].image.data;
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ imageUrl: `data:image/png;base64,${base64Image}` })
+        };
+    }
+
     return {
-        statusCode: 200,
-        body: JSON.stringify(data)
+        statusCode: 500,
+        body: "Image generation failed"
     };
 };
