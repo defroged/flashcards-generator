@@ -21,8 +21,6 @@ exports.handler = async function(event, context) {
         })
     });
 
-    console.info('Received response from OpenAI API:', await response.text());
-
     if (!response.ok) {
         console.error('Failed to generate image:', response.statusText);
         return { statusCode: 500, body: "Image generation failed: " + response.statusText };
