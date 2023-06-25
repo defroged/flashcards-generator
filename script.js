@@ -12,7 +12,7 @@ window.onload = function() {
         let imageUrl;
         if (useMockImage) {
             // Use a mock image URL
-            imageUrl = "/mock.png";
+            imageUrl = "/public/mock.png";
 
         } else {
             // Call the API to generate an image
