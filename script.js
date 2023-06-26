@@ -43,31 +43,16 @@ window.onload = function() {
 
     document.getElementById('save-pdf').addEventListener('click', function() {
         const flashcard = document.getElementById('flashcard');
-        const printSize = document.getElementById('print-size').value.toUpperCase();
 
-        // Create a new jsPDF instance with the correct format
-        const pdf = new window.jspdf.jsPDF({
-            orientation: 'landscape',
-            format: printSize
-        });
+        // Use html2pdf to convert the flashcard to a PDF
+        const opt = {
+            margin:       0,
+            filename:     'flashcard.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
 
-        // Use html2canvas to convert the flashcard to a canvas
-        html2canvas(flashcard).then(canvas => {
-            // Convert the canvas to an image
-            const imgData = canvas.toDataURL('image/png');
-
-            // Calculate the ratio of the flashcard's width to its height
-            const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
-
-            // Calculate the width and height of the image in the PDF
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdfWidth / ratio;
-
-            // Add the image to the PDF
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-
-            // Save the PDF
-            pdf.save('flashcard.pdf');
-        });
+        html2pdf().set(opt).from(flashcard).save();
     });
 }
