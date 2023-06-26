@@ -45,7 +45,7 @@ window.onload = function() {
         const flashcard = document.getElementById('flashcard');
         const printSize = document.getElementById('print-size').value.toUpperCase();
 
-        const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
+        const { PDFDocument, rgb, StandardFonts } = pdfLib;
 
         // Create a new PDFDocument instance
         const pdfDoc = await PDFDocument.create();
