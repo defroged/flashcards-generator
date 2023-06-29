@@ -9,10 +9,10 @@ window.onload = function() {
         // Set this to true to use the mock image, false to call the API
         const useMockImage = false;
 
-        let imageResponse;
+        let imageUrl;
         if (useMockImage) {
             // Use a mock image URL
-            imageResponse = await fetch("/public/mock.png");
+            imageUrl = "/public/mock.png";
 
         } else {
             // Call the API to generate an image
@@ -24,33 +24,20 @@ window.onload = function() {
                 body: JSON.stringify({ prompt: imagePrompt })
             });
             const data = await response.json();
-            imageResponse = await fetch(data.imageUrl);
+            imageUrl = data.imageUrl;
         }
 
-        // Convert the fetched image to a Blob
-        const imageBlob = await imageResponse.blob();
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = flashcardText;
 
-        // Create a new FileReader
-        const reader = new FileReader();
+        img.onload = function() {
+            const flashcard = document.getElementById('flashcard');
+            flashcard.className = printSize;
 
-        // Convert the Blob to a Data URL
-        reader.readAsDataURL(imageBlob);
-
-        reader.onloadend = function() {
-            const base64data = reader.result;
-
-            const img = new Image();
-            img.src = base64data;
-            img.alt = flashcardText;
-
-            img.onload = function() {
-                const flashcard = document.getElementById('flashcard');
-                flashcard.className = printSize;
-
-                document.getElementById('flashcard-text-display').textContent = flashcardText;
-                document.getElementById('image-container').innerHTML = ''; // clear any previous image
-                document.getElementById('image-container').appendChild(img);
-            };
+            document.getElementById('flashcard-text-display').textContent = flashcardText;
+            document.getElementById('image-container').innerHTML = ''; // clear any previous image
+            document.getElementById('image-container').appendChild(img);
         };
     });
 
@@ -64,14 +51,23 @@ window.onload = function() {
             format: printSize
         });
 
-        // Use html2canvas to take a screenshot of the flashcard
-        window.html2canvas(flashcard).then(function(canvas) {
-            // Add the screenshot to the PDF
+        // Use html2canvas to convert the flashcard to a canvas
+        html2canvas(flashcard).then(canvas => {
+            // Convert the canvas to an image
             const imgData = canvas.toDataURL('image/png');
-            pdf.addImage(imgData, 'PNG', 0, 0);
+
+            // Calculate the ratio of the flashcard's width to its height
+            const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
+
+            // Calculate the width and height of the image in the PDF
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdfWidth / ratio;
+
+            // Add the image to the PDF
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
 
             // Save the PDF
             pdf.save('flashcard.pdf');
         });
     });
-};
+}
