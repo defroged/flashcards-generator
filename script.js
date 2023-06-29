@@ -29,7 +29,7 @@ window.onload = function() {
 
         const img = document.createElement('img');
 		img.crossOrigin = "anonymous";
-        img.src = imageUrl;
+        img.src = 'https://cors-anywhere.herokuapp.com/' + imageUrl;
         img.alt = flashcardText;
 
         img.onload = function() {
