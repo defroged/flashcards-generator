@@ -27,7 +27,8 @@ window.onload = function() {
             imageUrl = data.imageUrl;
         }
 
-        const img = document.createElement('img');
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
         img.src = imageUrl;
         img.alt = flashcardText;
 
