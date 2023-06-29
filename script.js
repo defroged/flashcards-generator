@@ -1,22 +1,18 @@
 window.onload = function() {
     document.getElementById('image-form').addEventListener('submit', async (event) => {
-        // ... keep the original code for fetching image here ...
+        event.preventDefault();
 
-        img.onload = function() {
-            const flashcard = document.getElementById('flashcard');
-            flashcard.className = printSize;
+        // ... the rest of the code for fetching image ...
 
-            document.getElementById('flashcard-text-display').textContent = flashcardText;
-            document.getElementById('image-container').innerHTML = ''; // clear any previous image
-            document.getElementById('image-container').appendChild(img);
-        };
     });
 
-    document.getElementById('save-pdf').addEventListener('click', function() {
+    document.getElementById('save-pdf').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default click action
+        
         const flashcard = document.getElementById('flashcard');
         const printSize = document.getElementById('print-size').value.toUpperCase();
 
-        // Wait for the image to load before capturing the flashcard
+        // Check if image is loaded before capturing the flashcard
         if (document.querySelector("#image-container img").complete) {
             captureAndSaveFlashcard(flashcard, printSize);
         } else {
@@ -28,6 +24,8 @@ window.onload = function() {
 }
 
 function captureAndSaveFlashcard(flashcard, printSize) {
+    console.log('Capturing and saving flashcard'); // Debug log
+
     // Create a new jsPDF instance with the correct format
     const pdf = new window.jspdf.jsPDF({
         orientation: 'landscape',
@@ -52,5 +50,8 @@ function captureAndSaveFlashcard(flashcard, printSize) {
 
             // Save the PDF
             pdf.save('flashcard.pdf');
+        })
+        .catch(error => {
+            console.error('Error in capturing the flashcard:', error); // Log any error
         });
 }
