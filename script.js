@@ -57,30 +57,30 @@ window.onload = function() {
         });
 
         // Use html2canvas to convert the flashcard to a canvas
-        html2canvas(flashcard).then(canvas => {
-            console.log('Canvas:', canvas); // Log the canvas to make sure it's capturing the content
+        html2canvas(flashcard, { scale: 1 }).then(canvas => {
+    console.log('Canvas:', canvas);
 
-            // Convert the canvas to an image
-            const imgData = canvas.toDataURL('image/png');
-            
-            // Log the image data URL
-            console.log('Image Data URL:', imgData);
+    const imgData = canvas.toDataURL('image/png');
 
-            // Calculate the ratio of the flashcard's width to its height
-            const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
+    // Set PDF width and height based on points (72 points = 1 inch)
+    const pdfWidth = 72 * 11; // 11 inches width for standard landscape
+    const pdfHeight = 72 * 8.5; // 8.5 inches height for standard landscape
 
-            // Calculate the width and height of the image in the PDF
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdfWidth / ratio;
+    const pdf = new window.jspdf.jsPDF({
+        orientation: 'landscape',
+        unit: 'pt',
+        format: [pdfWidth, pdfHeight]
+    });
 
-            // Add the image to the PDF
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    // Add the image to the PDF
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
 
-            // Save the PDF
-            pdf.save('flashcard.pdf');
-        }).catch((error) => {
-            console.error('Error capturing canvas:', error); // Log any error during canvas capture
-        });
+    // Save the PDF
+    pdf.save('flashcard.pdf');
+}).catch((error) => {
+    console.error('Error capturing canvas:', error);
+});
+
     } else {
         alert('Please load an image first before saving as PDF');
     }
