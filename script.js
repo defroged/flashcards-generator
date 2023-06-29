@@ -46,36 +46,44 @@ window.onload = function() {
     });
 
     document.getElementById('save-pdf').addEventListener('click', function() {
-        if (imageUrl) {
-            const flashcard = document.getElementById('flashcard');
-            const printSize = document.getElementById('print-size').value.toUpperCase();
+    if (imageUrl) {
+        const flashcard = document.getElementById('flashcard');
+        const printSize = document.getElementById('print-size').value.toUpperCase();
 
-            // Create a new jsPDF instance with the correct format
-            const pdf = new window.jspdf.jsPDF({
-                orientation: 'landscape',
-                format: printSize
-            });
+        // Create a new jsPDF instance with the correct format
+        const pdf = new window.jspdf.jsPDF({
+            orientation: 'landscape',
+            format: printSize
+        });
 
-            // Use html2canvas to convert the flashcard to a canvas
-            html2canvas(flashcard).then(canvas => {
-                // Convert the canvas to an image
-                const imgData = canvas.toDataURL('image/png');
+        // Use html2canvas to convert the flashcard to a canvas
+        html2canvas(flashcard).then(canvas => {
+            console.log('Canvas:', canvas); // Log the canvas to make sure it's capturing the content
 
-                // Calculate the ratio of the flashcard's width to its height
-                const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
+            // Convert the canvas to an image
+            const imgData = canvas.toDataURL('image/png');
+            
+            // Log the image data URL
+            console.log('Image Data URL:', imgData);
 
-                // Calculate the width and height of the image in the PDF
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdfWidth / ratio;
+            // Calculate the ratio of the flashcard's width to its height
+            const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
 
-                // Add the image to the PDF
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            // Calculate the width and height of the image in the PDF
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdfWidth / ratio;
 
-                // Save the PDF
-                pdf.save('flashcard.pdf');
-            });
-        } else {
-            alert('Please load an image first before saving as PDF');
-        }
-    });
+            // Add the image to the PDF
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+            // Save the PDF
+            pdf.save('flashcard.pdf');
+        }).catch((error) => {
+            console.error('Error capturing canvas:', error); // Log any error during canvas capture
+        });
+    } else {
+        alert('Please load an image first before saving as PDF');
+    }
+});
+
 }
