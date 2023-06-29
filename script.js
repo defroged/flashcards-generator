@@ -28,6 +28,7 @@ window.onload = function() {
         }
 
         const img = document.createElement('img');
+		img.crossOrigin = "anonymous";
         img.src = imageUrl;
         img.alt = flashcardText;
 
