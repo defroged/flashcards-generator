@@ -1,6 +1,4 @@
 window.onload = function() {
-    let imageUrl = null;
-
     document.getElementById('image-form').addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -11,9 +9,11 @@ window.onload = function() {
         // Set this to true to use the mock image, false to call the API
         const useMockImage = false;
 
+        let imageUrl;
         if (useMockImage) {
             // Use a mock image URL
             imageUrl = "/public/mock.png";
+
         } else {
             // Call the API to generate an image
             const response = await fetch('/.netlify/functions/generateImage', {
@@ -28,8 +28,7 @@ window.onload = function() {
         }
 
         const img = document.createElement('img');
-		img.crossOrigin = "anonymous";
-        img.src = 'https://cors-anywhere.herokuapp.com/' + imageUrl;
+        img.src = imageUrl;
         img.alt = flashcardText;
 
         img.onload = function() {
@@ -40,14 +39,9 @@ window.onload = function() {
             document.getElementById('image-container').innerHTML = ''; // clear any previous image
             document.getElementById('image-container').appendChild(img);
         };
-
-        img.onerror = function() {
-            alert('Failed to load image');
-        };
     });
 
     document.getElementById('save-pdf').addEventListener('click', function() {
-    if (imageUrl) {
         const flashcard = document.getElementById('flashcard');
         const printSize = document.getElementById('print-size').value.toUpperCase();
 
@@ -58,33 +52,22 @@ window.onload = function() {
         });
 
         // Use html2canvas to convert the flashcard to a canvas
-        html2canvas(flashcard, { scale: 1 }).then(canvas => {
-    console.log('Canvas:', canvas);
+        html2canvas(flashcard).then(canvas => {
+            // Convert the canvas to an image
+            const imgData = canvas.toDataURL('image/png');
 
-    const imgData = canvas.toDataURL('image/png');
+            // Calculate the ratio of the flashcard's width to its height
+            const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
 
-    // Set PDF width and height based on points (72 points = 1 inch)
-    const pdfWidth = 72 * 11; // 11 inches width for standard landscape
-    const pdfHeight = 72 * 8.5; // 8.5 inches height for standard landscape
+            // Calculate the width and height of the image in the PDF
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdfWidth / ratio;
 
-    const pdf = new window.jspdf.jsPDF({
-        orientation: 'landscape',
-        unit: 'pt',
-        format: [pdfWidth, pdfHeight]
+            // Add the image to the PDF
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+            // Save the PDF
+            pdf.save('flashcard.pdf');
+        });
     });
-
-    // Add the image to the PDF
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-
-    // Save the PDF
-    pdf.save('flashcard.pdf');
-}).catch((error) => {
-    console.error('Error capturing canvas:', error);
-});
-
-    } else {
-        alert('Please load an image first before saving as PDF');
-    }
-});
-
 }
