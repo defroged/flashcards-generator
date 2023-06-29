@@ -1,35 +1,6 @@
 window.onload = function() {
     document.getElementById('image-form').addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const flashcardText = document.getElementById('flashcard-text').value;
-        const imagePrompt = document.getElementById('image-prompt').value + ' clipart';
-        const printSize = document.getElementById('print-size').value;
-
-        // Set this to true to use the mock image, false to call the API
-        const useMockImage = false;
-
-        let imageUrl;
-        if (useMockImage) {
-            // Use a mock image URL
-            imageUrl = "/public/mock.png";
-
-        } else {
-            // Call the API to generate an image
-            const response = await fetch('/.netlify/functions/generateImage', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ prompt: imagePrompt })
-            });
-            const data = await response.json();
-            imageUrl = data.imageUrl;
-        }
-
-        const img = document.createElement('img');
-        img.src = imageUrl;
-        img.alt = flashcardText;
+        // ... keep the original code for fetching image here ...
 
         img.onload = function() {
             const flashcard = document.getElementById('flashcard');
@@ -45,14 +16,27 @@ window.onload = function() {
         const flashcard = document.getElementById('flashcard');
         const printSize = document.getElementById('print-size').value.toUpperCase();
 
-        // Create a new jsPDF instance with the correct format
-        const pdf = new window.jspdf.jsPDF({
-            orientation: 'landscape',
-            format: printSize
-        });
+        // Wait for the image to load before capturing the flashcard
+        if (document.querySelector("#image-container img").complete) {
+            captureAndSaveFlashcard(flashcard, printSize);
+        } else {
+            document.querySelector("#image-container img").addEventListener('load', () => {
+                captureAndSaveFlashcard(flashcard, printSize);
+            });
+        }
+    });
+}
 
-        // Use html2canvas to convert the flashcard to a canvas
-        html2canvas(flashcard).then(canvas => {
+function captureAndSaveFlashcard(flashcard, printSize) {
+    // Create a new jsPDF instance with the correct format
+    const pdf = new window.jspdf.jsPDF({
+        orientation: 'landscape',
+        format: printSize
+    });
+
+    // Use html2canvas to convert the flashcard to a canvas
+    html2canvas(flashcard, { scale: 2 }) // Use higher DPI for better quality
+        .then(canvas => {
             // Convert the canvas to an image
             const imgData = canvas.toDataURL('image/png');
 
@@ -69,5 +53,4 @@ window.onload = function() {
             // Save the PDF
             pdf.save('flashcard.pdf');
         });
-    });
 }
