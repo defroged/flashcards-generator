@@ -20,6 +20,20 @@
             color: #333;
         }
 
+#image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 80%; /* increase this to allow image to be bigger, but leave some room for text */
+    margin: 1em 0;
+}
+
+#image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
         #image-form {
             display: flex;
             flex-direction: column;
@@ -91,7 +105,7 @@
         }
 
         #flashcard-text-display {
-            font-size: 3em;
+            font-size: 6em;
         }
 
         #image-container img {
