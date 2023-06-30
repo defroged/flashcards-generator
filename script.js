@@ -34,8 +34,8 @@ window.onload = function () {
         img.alt = flashcardText;
 
         img.onload = function () {
-    // Show the flashcard container
-    document.getElementById('flashcard-container').style.display = 'flex';
+    // Show the flashcard
+    document.getElementById('flashcard').style.display = 'flex';
 
     // Hide the loading animation
     document.getElementById('loader').style.display = 'none';
@@ -50,6 +50,7 @@ window.onload = function () {
     document.getElementById('image-container').innerHTML = ''; // clear any previous image
     document.getElementById('image-container').appendChild(img);
 };
+
 
 
         // Set the image source for displaying
