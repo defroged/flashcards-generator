@@ -38,10 +38,12 @@ window.onload = function() {
             document.getElementById('image-container').appendChild(img);
         };
 
-        // Download the image
-        const response = await fetch(imageUrl);
-        const blob = await response.blob();
-        const objectUrl = URL.createObjectURL(blob);
+        // Download the image using the serverless function
+const netlifyFunctionUrl = "/.netlify/functions/fetchImage?url=" + encodeURIComponent(imageUrl);
+const serverResponse = await fetch(netlifyFunctionUrl);
+const serverData = await serverResponse.json();
+const objectUrl = "data:image/png;base64," + serverData.image;
+
 
         // Use the object URL as the image source for displaying and for the PDF creation
         img.src = objectUrl;
