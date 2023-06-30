@@ -8,7 +8,7 @@ window.onload = function () {
         const fontFamily = document.getElementById('font-family').value;
 
         // Set this to true to use the mock image, false to call the API
-        const useMockImage = true;
+        const useMockImage = false;
 
         let imageUrl;
         if (useMockImage) {
@@ -68,7 +68,7 @@ window.onload = function () {
         });
 
         // Use html2canvas to convert the flashcard to a canvas
-        html2canvas(flashcard).then(canvas => {
+        html2canvas(flashcard, { backgroundColor: 'white' }).then(canvas => {
             // Convert the canvas to an image
             const imgData = canvas.toDataURL('image/png');
 

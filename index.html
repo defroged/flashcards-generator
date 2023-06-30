@@ -7,130 +7,125 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <title>Flashcard Generator</title>
     <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
 
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-            color: #333;
-        }
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+        color: #333;
+    }
 
-#image-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-height: 100%; /* increase this to allow image to be bigger, but leave some room for text */
-    margin: 1em 0;
-}
+    #image-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-height: 80%; /* increase this to allow image to be bigger, but leave some room for text */
+        margin: 1em 0;
+    }
 
-#image-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
+    #image-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
 
-        #image-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin: 20px;
-            border-radius: 8px;
-        }
+    #image-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin: 20px;
+        border-radius: 8px;
+    }
 
-        #image-form label {
-            margin: 10px 0;
-            color: #555;
-        }
+    #image-form label {
+        margin: 10px 0;
+        color: #555;
+    }
 
-        #image-form input,
-        #image-form select {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 100%;
-            max-width: 400px;
-        }
+    #image-form input,
+    #image-form select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 100%;
+        max-width: 400px;
+    }
 
-        #image-form input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            margin-top: 20px;
-        }
+    #image-form input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        margin-top: 20px;
+    }
 
-        #image-form input[type="submit"]:hover {
-            background-color: #45a049;
-        }
+    #image-form input[type="submit"]:hover {
+        background-color: #45a049;
+    }
 
-        #flashcard-container {
-            display: flex;
-            justify-content: center;
-            margin: 20px;
-        }
+    #flashcard-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px;
+        background-color: white; /* explicitly set background color */
+    }
 
-        #flashcard {
-            border: 1px solid #000;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            margin: 2em auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            text-align: center;
-            background-color: #fff;
-            border-radius: 8px;
-        }
+    #flashcard {
+        border: 1px solid #000;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        margin: 2em auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        text-align: center;
+        background-color: white; /* explicitly set background color */
+        border-radius: 8px;
+    }
 
-        #flashcard.a4 {
-            width: 297mm;
-            height: 210mm;
-        }
+    #flashcard.a4 {
+        width: 297mm;
+        height: 210mm;
+    }
 
-        #flashcard.b5 {
-            width: 250mm;
-            height: 176mm;
-        }
+    #flashcard.b5 {
+        width: 250mm;
+        height: 176mm;
+    }
 
-        #flashcard.a5 {
-            width: 210mm;
-            height: 148mm;
-        }
+    #flashcard.a5 {
+        width: 210mm;
+        height: 148mm;
+    }
 
-        #flashcard-text-display {
-            font-size: 6em;
-        }
+    #flashcard-text-display {
+        font-size: 6em;
+    }
 
-        #image-container img {
-            max-width: 100%;
-            max-height: 70%;
-            height: auto;
-            object-fit: contain;
-        }
+    #save-pdf {
+        display: block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        background-color: #2196F3;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+    }
 
-        #save-pdf {
-            display: block;
-            margin: 0 auto;
-            padding: 10px 20px;
-            background-color: #2196F3;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    #save-pdf:hover {
+        background-color: #0d8aee;
+    }
+</style>
 
-        #save-pdf:hover {
-            background-color: #0d8aee;
-        }
-    </style>
 </head>
 
 <body>
