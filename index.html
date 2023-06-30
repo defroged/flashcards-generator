@@ -131,6 +131,22 @@
 
         #save-pdf:hover {
             background-color: #0d8aee;
+			
+			#loader {
+            display: none;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            position: absolute;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
         }
     </style>
 </head>
@@ -163,7 +179,9 @@
     </form>
     <div id="flashcard-container">
         <div id="flashcard">
-            <div id="image-container"></div>
+            <div id="image-container">
+                <div id="loader"></div>
+            </div>
             <div id="text-container">
                 <p id="flashcard-text-display"></p>
             </div>

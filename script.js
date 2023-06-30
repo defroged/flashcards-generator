@@ -7,6 +7,9 @@ window.onload = function () {
         const printSize = document.getElementById('print-size').value;
         const fontFamily = document.getElementById('font-family').value;
 
+        // Show the loading animation
+        document.getElementById('loader').style.display = 'block';
+
         // Set this to true to use the mock image, false to call the API
         const useMockImage = false;
 
@@ -31,6 +34,9 @@ window.onload = function () {
         img.alt = flashcardText;
 
         img.onload = function () {
+            // Hide the loading animation
+            document.getElementById('loader').style.display = 'none';
+
             const flashcard = document.getElementById('flashcard');
             flashcard.className = printSize;
 
