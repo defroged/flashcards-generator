@@ -34,11 +34,11 @@ window.onload = function () {
         img.alt = flashcardText;
 
         img.onload = function () {
-    // Show the flashcard
-    document.getElementById('flashcard').style.display = 'flex';
-
     // Hide the loading animation
     document.getElementById('loader').style.display = 'none';
+    
+    // Show the flashcard
+    document.getElementById('flashcard').style.display = 'block';
 
     const flashcard = document.getElementById('flashcard');
     flashcard.className = printSize;
