@@ -31,16 +31,20 @@ window.onload = function() {
         img.src = imageUrl;
         img.alt = flashcardText;
 
-        img.onload = function() {
-            const flashcard = document.getElementById('flashcard');
-            flashcard.className = printSize;
+        img.onload = async function() {
+    const flashcard = document.getElementById('flashcard');
+    flashcard.className = printSize;
 
-            document.getElementById('flashcard-text-display').textContent = flashcardText;
-            document.getElementById('image-container').innerHTML = ''; // clear any previous image
-            document.getElementById('image-container').appendChild(img);
-        };
-    });
+    document.getElementById('flashcard-text-display').textContent = flashcardText;
+    document.getElementById('image-container').innerHTML = ''; // clear any previous image
+    document.getElementById('image-container').appendChild(img);
 
+    // Download the image
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    const objectUrl = URL.createObjectURL(blob);
+
+    // Use the object URL as the image source for the PDF creation
     document.getElementById('save-pdf').addEventListener('click', function() {
         const flashcard = document.getElementById('flashcard');
         const printSize = document.getElementById('print-size').value.toUpperCase();
@@ -70,4 +74,6 @@ window.onload = function() {
             pdf.save('flashcard.pdf');
         });
     });
+};
+
 }
