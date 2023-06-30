@@ -34,19 +34,23 @@ window.onload = function () {
         img.alt = flashcardText;
 
         img.onload = function () {
-            // Hide the loading animation
-            document.getElementById('loader').style.display = 'none';
+    // Show the flashcard container
+    document.getElementById('flashcard-container').style.display = 'flex';
 
-            const flashcard = document.getElementById('flashcard');
-            flashcard.className = printSize;
+    // Hide the loading animation
+    document.getElementById('loader').style.display = 'none';
 
-            const flashcardTextDisplay = document.getElementById('flashcard-text-display');
-            flashcardTextDisplay.textContent = flashcardText;
-            flashcardTextDisplay.style.fontFamily = fontFamily;
+    const flashcard = document.getElementById('flashcard');
+    flashcard.className = printSize;
 
-            document.getElementById('image-container').innerHTML = ''; // clear any previous image
-            document.getElementById('image-container').appendChild(img);
-        };
+    const flashcardTextDisplay = document.getElementById('flashcard-text-display');
+    flashcardTextDisplay.textContent = flashcardText;
+    flashcardTextDisplay.style.fontFamily = fontFamily;
+
+    document.getElementById('image-container').innerHTML = ''; // clear any previous image
+    document.getElementById('image-container').appendChild(img);
+};
+
 
         // Set the image source for displaying
         if (useMockImage) {
