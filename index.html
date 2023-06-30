@@ -157,6 +157,7 @@
     margin: 20px auto; /* Add some margin to move it down a bit */
 }
 
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -168,6 +169,7 @@
 <body>
     <h1>Flashcard Generator</h1>
     <form id="image-form">
+	<div id="loader" class="loader"></div>
         <label for="flashcard-text">Flashcard Text:</label>
         <input type="text" id="flashcard-text" name="flashcard-text" required>
 
@@ -192,7 +194,6 @@
         <input type="submit" value="Generate Flashcard">
     </form>
     <div id="flashcard-container">
-    <div id="loader" class="loader"></div>
     <div id="flashcard">
         <div id="image-container"></div>
         <div id="text-container">
