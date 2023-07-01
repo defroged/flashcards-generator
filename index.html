@@ -83,7 +83,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    height: calc(80vh - 60px); /* subtracting 60px for the space of buttons and text */
+    margin-bottom: 60px; /* Space for the buttons and text below the canvas */
 }
 
 #flashcard {
@@ -91,9 +92,32 @@
     text-align: center;
     background-color: white;
     border-radius: 8px;
-    max-height: 80vh;
-    max-width: calc(80vh * 1.4142); /* aspect ratio 1.4142 for A4 */
+    max-height: 100%;
+    max-width: calc(100% * 1.4142); /* aspect ratio 1.4142 for A4 */
     width: auto;
+}
+
+.regenerate-info {
+    display: none;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.regenerate-arrow {
+    font-size: 24px;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -101,6 +125,7 @@
         font-size: 2em;
     }
 }
+
 
 
 #flashcard.a4 {
