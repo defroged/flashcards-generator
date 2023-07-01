@@ -10,15 +10,12 @@ window.onload = function () {
         // Show the loading animation
         document.getElementById('loader').style.display = 'block';
 
-        // Set this to true to use the mock image, false to call the API
-        const useMockImage = false;
+        const useMockImage = false; // Set this to true to use the mock image, false to call the API
 
         let imageUrl;
         if (useMockImage) {
-            // Use a mock image URL
             imageUrl = "/public/mock.png";
         } else {
-            // Call the API to generate an image
             const response = await fetch('/.netlify/functions/generateImage', {
                 method: 'POST',
                 headers: {
@@ -34,34 +31,28 @@ window.onload = function () {
         img.alt = flashcardText;
 
         img.onload = function () {
-    // Hide the loading animation
-    document.getElementById('loader').style.display = 'none';
-	
-	// Show the hint text
-    document.getElementById('regenerate-hint').style.display = 'inline-block';
-    
-    // Show the flashcard
-    document.getElementById('flashcard').style.display = 'block';
+            // Hide the loading animation
+            document.getElementById('loader').style.display = 'none';
 
-    const flashcard = document.getElementById('flashcard');
-    flashcard.className = printSize;
+            // Show the hint text
+            document.getElementById('regenerate-hint').style.display = 'inline-block';
 
-    const flashcardTextDisplay = document.getElementById('flashcard-text-display');
-    flashcardTextDisplay.textContent = flashcardText;
-    flashcardTextDisplay.style.fontFamily = fontFamily;
+            // Show the flashcard
+            const flashcard = document.getElementById('flashcard');
+            flashcard.style.display = 'block';
+            flashcard.className = printSize;
 
-    document.getElementById('image-container').innerHTML = ''; // clear any previous image
-    document.getElementById('image-container').appendChild(img);
-};
+            const flashcardTextDisplay = document.getElementById('flashcard-text-display');
+            flashcardTextDisplay.textContent = flashcardText;
+            flashcardTextDisplay.style.fontFamily = fontFamily;
 
+            document.getElementById('image-container').innerHTML = '';
+            document.getElementById('image-container').appendChild(img);
+        };
 
-
-        // Set the image source for displaying
         if (useMockImage) {
-            // If using mock image, use it directly
             img.src = imageUrl;
         } else {
-            // If not using mock image, download it through the serverless function to bypass CORS issues
             const netlifyFunctionUrl = "/.netlify/functions/fetchImage?url=" + encodeURIComponent(imageUrl);
             const serverResponse = await fetch(netlifyFunctionUrl);
             const serverData = await serverResponse.json();
@@ -72,48 +63,55 @@ window.onload = function () {
     });
 
     document.getElementById('save-pdf').addEventListener('click', function () {
-    const flashcard = document.getElementById('flashcard');
-    const printSize = document.getElementById('print-size').value.toUpperCase();
+        const flashcard = document.getElementById('flashcard');
+        const printSize = document.getElementById('print-size').value.toUpperCase();
 
-    // Create a new jsPDF instance with the correct format
-    const pdf = new window.jspdf.jsPDF({
-        orientation: 'landscape',
-        format: printSize
+        // Create a new jsPDF instance with the correct format
+        const pdf = new window.jspdf.jsPDF({
+            orientation: 'landscape',
+            format: printSize
+        });
+
+        // Temporarily add the no-border class to remove the border
+        flashcard.classList.add('no-border');
+
+        // Use html2canvas to convert the flashcard to a canvas
+        html2canvas(flashcard, {
+            backgroundColor: 'white',
+            scale: 3, // Increasing scale for better resolution.
+            width: flashcard.offsetWidth,
+            height: flashcard.offsetHeight,
+        }).then(canvas => {
+            // Remove the no-border class after capturing
+            flashcard.classList.remove('no-border');
+
+            const imgData = canvas.toDataURL('image/png');
+
+            const pdfPageWidth = pdf.internal.pageSize.getWidth();
+            const pdfPageHeight = pdf.internal.pageSize.getHeight();
+            const pdfPageRatio = pdfPageWidth / pdfPageHeight;
+
+            const imageWidth = canvas.width;
+            const imageHeight = canvas.height;
+            const imageRatio = imageWidth / imageHeight;
+
+            let contentWidth, contentHeight;
+            if (pdfPageRatio > imageRatio) {
+                contentHeight = pdfPageHeight;
+                contentWidth = contentHeight * imageRatio;
+            } else {
+                contentWidth = pdfPageWidth;
+                contentHeight = contentWidth / imageRatio;
+            }
+
+            const posX = (pdfPageWidth - contentWidth) / 2;
+            const posY = (pdfPageHeight - contentHeight) / 2;
+
+            // Add the image to the PDF without the border.
+            pdf.addImage(imgData, 'PNG', posX, posY, contentWidth, contentHeight);
+
+            // Save the PDF
+            pdf.save('flashcard.pdf');
+        });
     });
-
-    // Use html2canvas to convert the flashcard to a canvas
-    html2canvas(flashcard, {
-    backgroundColor: 'white',
-    scale: 1,
-    width: flashcard.offsetWidth,
-    height: flashcard.offsetHeight,
-}).then(canvas => {
-    const imgData = canvas.toDataURL('image/png');
-    
-    const pdfPageWidth = pdf.internal.pageSize.getWidth();
-    const pdfPageHeight = pdf.internal.pageSize.getHeight();
-    const pdfPageRatio = pdfPageWidth / pdfPageHeight;
-    
-    const imageWidth = canvas.width;
-    const imageHeight = canvas.height;
-    const imageRatio = imageWidth / imageHeight;
-    
-    let contentWidth, contentHeight;
-    if (pdfPageRatio > imageRatio) {
-        contentHeight = pdfPageHeight;
-        contentWidth = contentHeight * imageRatio;
-    } else {
-        contentWidth = pdfPageWidth;
-        contentHeight = contentWidth / imageRatio;
-    }
-    
-    const posX = (pdfPageWidth - contentWidth) / 2;
-    const posY = (pdfPageHeight - contentHeight) / 2;
-
-    pdf.addImage(imgData, 'PNG', posX, posY, contentWidth, contentHeight);
-    pdf.save('flashcard.pdf');
-});
-
-});
-
 }
