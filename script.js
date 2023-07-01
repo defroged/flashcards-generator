@@ -82,23 +82,38 @@ window.onload = function () {
     });
 
     // Use html2canvas to convert the flashcard to a canvas
-    html2canvas(flashcard, { backgroundColor: 'white', width: flashcard.offsetWidth, height: flashcard.offsetHeight }).then(canvas => {
-        // Convert the canvas to an image
-        const imgData = canvas.toDataURL('image/png');
+    html2canvas(flashcard, {
+    backgroundColor: 'white',
+    scale: 1,
+    width: flashcard.offsetWidth,
+    height: flashcard.offsetHeight,
+}).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    
+    const pdfPageWidth = pdf.internal.pageSize.getWidth();
+    const pdfPageHeight = pdf.internal.pageSize.getHeight();
+    const pdfPageRatio = pdfPageWidth / pdfPageHeight;
+    
+    const imageWidth = canvas.width;
+    const imageHeight = canvas.height;
+    const imageRatio = imageWidth / imageHeight;
+    
+    let contentWidth, contentHeight;
+    if (pdfPageRatio > imageRatio) {
+        contentHeight = pdfPageHeight;
+        contentWidth = contentHeight * imageRatio;
+    } else {
+        contentWidth = pdfPageWidth;
+        contentHeight = contentWidth / imageRatio;
+    }
+    
+    const posX = (pdfPageWidth - contentWidth) / 2;
+    const posY = (pdfPageHeight - contentHeight) / 2;
 
-        // Calculate the ratio of the flashcard's width to its height
-        const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
+    pdf.addImage(imgData, 'PNG', posX, posY, contentWidth, contentHeight);
+    pdf.save('flashcard.pdf');
+});
 
-        // Calculate the width and height of the image in the PDF
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdfWidth / ratio;
-
-        // Add the image to the PDF
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-
-        // Save the PDF
-        pdf.save('flashcard.pdf');
-    });
 });
 
 }
