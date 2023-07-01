@@ -80,19 +80,28 @@
         }
 
         #flashcard-container {
-    max-width: 100%;
-    overflow: hidden; /* Hide the overflow content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
 }
 
 #flashcard {
-    position: relative;
-    width: 100vw; /* This will make it responsive */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    margin: 2em auto;
     text-align: center;
     background-color: white;
     border-radius: 8px;
+    max-height: 80vh;
+    max-width: calc(80vh * 1.4142); /* aspect ratio 1.4142 for A4 */
+    width: auto;
 }
+
+@media screen and (max-width: 768px) {
+    #flashcard-text-display {
+        font-size: 2em;
+    }
+}
+
 
 #flashcard.a4 {
     padding-top: 70.71vw; /* 210mm / 297mm * 100 = 70.71 */
