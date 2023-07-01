@@ -72,32 +72,33 @@ window.onload = function () {
     });
 
     document.getElementById('save-pdf').addEventListener('click', function () {
-        const flashcard = document.getElementById('flashcard');
-        const printSize = document.getElementById('print-size').value.toUpperCase();
+    const flashcard = document.getElementById('flashcard');
+    const printSize = document.getElementById('print-size').value.toUpperCase();
 
-        // Create a new jsPDF instance with the correct format
-        const pdf = new window.jspdf.jsPDF({
-            orientation: 'landscape',
-            format: printSize
-        });
-
-        // Use html2canvas to convert the flashcard to a canvas
-        html2canvas(flashcard, { backgroundColor: 'white' }).then(canvas => {
-            // Convert the canvas to an image
-            const imgData = canvas.toDataURL('image/png');
-
-            // Calculate the ratio of the flashcard's width to its height
-            const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
-
-            // Calculate the width and height of the image in the PDF
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdfWidth / ratio;
-
-            // Add the image to the PDF
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-
-            // Save the PDF
-            pdf.save('flashcard.pdf');
-        });
+    // Create a new jsPDF instance with the correct format
+    const pdf = new window.jspdf.jsPDF({
+        orientation: 'landscape',
+        format: printSize
     });
+
+    // Use html2canvas to convert the flashcard to a canvas
+    html2canvas(flashcard, { backgroundColor: 'white', scale: 2 }).then(canvas => {
+        // Convert the canvas to an image
+        const imgData = canvas.toDataURL('image/png');
+
+        // Calculate the ratio of the flashcard's width to its height
+        const ratio = flashcard.offsetWidth / flashcard.offsetHeight;
+
+        // Calculate the width and height of the image in the PDF
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdfWidth / ratio;
+
+        // Add the image to the PDF
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+        // Save the PDF
+        pdf.save('flashcard.pdf');
+    });
+});
+
 }
