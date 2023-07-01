@@ -82,7 +82,7 @@ window.onload = function () {
     });
 
     // Use html2canvas to convert the flashcard to a canvas
-    html2canvas(flashcard, { backgroundColor: 'white', scale: 2 }).then(canvas => {
+    html2canvas(flashcard, { backgroundColor: 'white', scale: window.devicePixelRatio }).then(canvas => {
         // Convert the canvas to an image
         const imgData = canvas.toDataURL('image/png');
 
@@ -100,5 +100,6 @@ window.onload = function () {
         pdf.save('flashcard.pdf');
     });
 });
+
 
 }
