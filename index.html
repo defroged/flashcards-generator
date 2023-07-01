@@ -163,6 +163,17 @@
     100% { transform: rotate(360deg); }
 }
 
+@keyframes arrow-animation {
+    0% { margin-right: 5px; }
+    50% { margin-right: 10px; }
+    100% { margin-right: 5px; }
+}
+
+#arrow {
+    animation: arrow-animation 1s infinite;
+}
+
+
     </style>
 </head>
 
@@ -192,7 +203,11 @@
         </select>
 
         <input type="submit" value="Generate Flashcard">
-    </form>
+		<div id="regenerate-hint" style="display: none;">
+        <span id="arrow" style="margin-right: 5px;">←</span>
+        <span>Click to regenerate image</span>
+    </div>
+</form>
     <div id="flashcard-container">
     <div id="flashcard">
         <div id="image-container"></div>

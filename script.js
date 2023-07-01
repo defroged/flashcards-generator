@@ -36,6 +36,9 @@ window.onload = function () {
         img.onload = function () {
     // Hide the loading animation
     document.getElementById('loader').style.display = 'none';
+	
+	// Show the hint text
+    document.getElementById('regenerate-hint').style.display = 'inline-block';
     
     // Show the flashcard
     document.getElementById('flashcard').style.display = 'block';
