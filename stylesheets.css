@@ -14,9 +14,10 @@ body {
         #image-container {
 		    position: relative; 
             display: flex;
+			background-color: white;
             align-items: center;
             justify-content: center;
-            height: 80%; /* fixed height for image container */
+            height: 80%;
             margin: 1em 0;
         }
 
@@ -30,7 +31,7 @@ body {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 20%; /* fixed height for text container */
+            height: 20%; 
             margin: 1em 0;
         }
 
