@@ -3,7 +3,8 @@ window.onload = function () {
         event.preventDefault();
 
         const flashcardText = document.getElementById('flashcard-text').value;
-        const imagePrompt = document.getElementById('image-prompt').value + ' clipart';
+        const baseImagePrompt = document.getElementById('image-prompt').value;
+        const imagePrompt = `${baseImagePrompt} clipart in cartoon style without background`;
         const printSize = document.getElementById('print-size').value;
         const fontFamily = document.getElementById('font-family').value;
 
