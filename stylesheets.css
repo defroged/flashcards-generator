@@ -178,8 +178,8 @@ h1 {
 /* Tooltip container */
 .tooltip {
     position: relative;
-    display: inline-block;
-    vertical-align: middle; 
+    display: block; /* updated this line */
+    margin-bottom: 10px; /* optional: add margin for better spacing */
 }
 
 
@@ -217,15 +217,15 @@ h1 {
 .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
-	
-	.tooltip-close {
+}
+
+.tooltip-close {
     position: absolute;
     top: 5px;
     right: 10px;
     cursor: pointer;
 }
 
-}
 
 @media only screen and (max-width: 600px) {
     #flashcard.a4 {
