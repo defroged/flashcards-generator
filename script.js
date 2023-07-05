@@ -63,55 +63,57 @@ window.onload = function () {
     });
 
     document.getElementById('save-pdf').addEventListener('click', function () {
-        const flashcard = document.getElementById('flashcard');
-        const printSize = document.getElementById('print-size').value.toUpperCase();
+    const flashcardText = document.getElementById('flashcard-text').value;
+    const flashcard = document.getElementById('flashcard');
+    const printSize = document.getElementById('print-size').value.toUpperCase();
 
-        // Create a new jsPDF instance with the correct format
-        const pdf = new window.jspdf.jsPDF({
-            orientation: 'landscape',
-            format: printSize
-        });
-
-        // Temporarily add the no-border class to remove the border
-        flashcard.classList.add('no-border');
-
-        // Use html2canvas to convert the flashcard to a canvas
-        html2canvas(flashcard, {
-            backgroundColor: 'white',
-            scale: 3, // Increasing scale for better resolution.
-            width: flashcard.offsetWidth,
-            height: flashcard.offsetHeight,
-        }).then(canvas => {
-            // Remove the no-border class after capturing
-            flashcard.classList.remove('no-border');
-
-            const imgData = canvas.toDataURL('image/png');
-
-            const pdfPageWidth = pdf.internal.pageSize.getWidth();
-            const pdfPageHeight = pdf.internal.pageSize.getHeight();
-            const pdfPageRatio = pdfPageWidth / pdfPageHeight;
-
-            const imageWidth = canvas.width;
-            const imageHeight = canvas.height;
-            const imageRatio = imageWidth / imageHeight;
-
-            let contentWidth, contentHeight;
-            if (pdfPageRatio > imageRatio) {
-                contentHeight = pdfPageHeight;
-                contentWidth = contentHeight * imageRatio;
-            } else {
-                contentWidth = pdfPageWidth;
-                contentHeight = contentWidth / imageRatio;
-            }
-
-            const posX = (pdfPageWidth - contentWidth) / 2;
-            const posY = (pdfPageHeight - contentHeight) / 2;
-
-            // Add the image to the PDF without the border.
-            pdf.addImage(imgData, 'PNG', posX, posY, contentWidth, contentHeight);
-
-            // Save the PDF
-            pdf.save('flashcard.pdf');
-        });
+    // Create a new jsPDF instance with the correct format
+    const pdf = new window.jspdf.jsPDF({
+        orientation: 'landscape',
+        format: printSize
     });
+
+    // Temporarily add the no-border class to remove the border
+    flashcard.classList.add('no-border');
+
+    // Use html2canvas to convert the flashcard to a canvas
+    html2canvas(flashcard, {
+        backgroundColor: 'white',
+        scale: 3, // Increasing scale for better resolution.
+        width: flashcard.offsetWidth,
+        height: flashcard.offsetHeight,
+    }).then(canvas => {
+        // Remove the no-border class after capturing
+        flashcard.classList.remove('no-border');
+
+        const imgData = canvas.toDataURL('image/png');
+
+        const pdfPageWidth = pdf.internal.pageSize.getWidth();
+        const pdfPageHeight = pdf.internal.pageSize.getHeight();
+        const pdfPageRatio = pdfPageWidth / pdfPageHeight;
+
+        const imageWidth = canvas.width;
+        const imageHeight = canvas.height;
+        const imageRatio = imageWidth / imageHeight;
+
+        let contentWidth, contentHeight;
+        if (pdfPageRatio > imageRatio) {
+            contentHeight = pdfPageHeight;
+            contentWidth = contentHeight * imageRatio;
+        } else {
+            contentWidth = pdfPageWidth;
+            contentHeight = contentWidth / imageRatio;
+        }
+
+        const posX = (pdfPageWidth - contentWidth) / 2;
+        const posY = (pdfPageHeight - contentHeight) / 2;
+
+        // Add the image to the PDF without the border.
+        pdf.addImage(imgData, 'PNG', posX, posY, contentWidth, contentHeight);
+
+        // Save the PDF with the flashcard text as the name
+        pdf.save(flashcardText ? `${flashcardText}.pdf` : 'flashcard.pdf');
+    });
+});
+
 }
