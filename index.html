@@ -14,10 +14,19 @@
     <form id="image-form">
         <div id="loader" class="loader"></div>
         <label for="flashcard-text">Flashcard Text:</label>
-        <div class="tooltip">
-            <input type="text" id="flashcard-text" name="flashcard-text" required>
-            <span class="tooltiptext">This is the text that appears in the flashcard</span>
-        </div>
+<input type="text" id="flashcard-text" name="flashcard-text" required>
+<div class="tooltip" id="tooltip1">
+    This is the text that appears in the flashcard
+    <span class="tooltip-close" id="closeTooltip1" onclick="closeTooltip('tooltip1')">x</span>
+</div>
+
+<label for="image-prompt">Image Prompt:</label>
+<input type="text" id="image-prompt" name="image-prompt" required>
+<div class="tooltip" id="tooltip2">
+    This is where you should input your instructions for the image generator. For examples <a href="#" onclick="openPopup()">click here</a>.
+    <span class="tooltip-close" id="closeTooltip2" onclick="closeTooltip('tooltip2')">x</span>
+</div>
+
 
         <label for="image-prompt">Image Prompt:</label>
         <div class="tooltip">
