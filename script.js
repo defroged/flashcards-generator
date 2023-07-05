@@ -115,7 +115,3 @@ window.onload = function () {
         });
     });
 }
-
-function closeTooltip(tooltipId) {
-    document.getElementById(tooltipId).style.display = 'none';
-}
