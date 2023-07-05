@@ -4,7 +4,7 @@ window.onload = function () {
 
         const flashcardText = document.getElementById('flashcard-text').value;
         const baseImagePrompt = document.getElementById('image-prompt').value;
-        const imagePrompt = `${baseImagePrompt} clipart in cartoon style without background`;
+        const imagePrompt = `simple illustration of a ${baseImagePrompt} as basic drawing clipart`;
         const printSize = document.getElementById('print-size').value;
         const fontFamily = document.getElementById('font-family').value;
 
