@@ -3,13 +3,14 @@ window.onload = function () {
         event.preventDefault();
 
         const flashcardText = document.getElementById('flashcard-text').value;
-        const baseImagePrompt = document.getElementById('image-prompt').value;
-        const imagePrompt = `simple illustration of a ${baseImagePrompt} as basic drawing clipart`;
         const printSize = document.getElementById('print-size').value;
         const fontFamily = document.getElementById('font-family').value;
 
         // Show the loading animation
         document.getElementById('loader').style.display = 'block';
+
+        // Get rephrased prompt from the Netlify Function
+        const imagePrompt = await getRephrasedPrompt(document.getElementById('image-prompt').value);
 
         const useMockImage = false; // Set this to true to use the mock image, false to call the API
 
@@ -117,4 +118,24 @@ window.onload = function () {
     });
 });
 
+}
+
+async function getRephrasedPrompt(originalPrompt) {
+    try {
+        const response = await fetch('/.netlify/functions/rephrasePrompt', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                prompt: originalPrompt,
+            }),
+        });
+
+        const data = await response.json();
+        return data.rephrasedPrompt;
+    } catch (error) {
+        console.error('Error rephrasing the prompt:', error);
+        return originalPrompt; // Return the original prompt in case of error
+    }
 }
