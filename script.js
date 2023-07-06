@@ -11,6 +11,9 @@ window.onload = function () {
 
         // Get rephrased prompt from the Netlify Function
         const imagePrompt = await getRephrasedPrompt(document.getElementById('image-prompt').value);
+		
+		// Log the rephrased prompt to the console
+        console.log('Rephrased prompt:', imagePrompt);
 
         const useMockImage = false; // Set this to true to use the mock image, false to call the API
 
