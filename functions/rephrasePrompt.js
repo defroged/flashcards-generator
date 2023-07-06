@@ -19,7 +19,7 @@ exports.handler = async function(event, context) {
             },
             body: JSON.stringify({
                 model: 'text-davinci-002',
-                prompt: `Rephrase this as a specific, standard image description in a simple and cute illustration in clipart style: "${userPrompt}"`,
+                prompt: `Rephrase this as an image description for a simple and cute illustration in clipart style: "${userPrompt}"`,
                 max_tokens: 50,
                 n: 1,
                 stop: null,
