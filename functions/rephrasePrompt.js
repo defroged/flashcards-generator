@@ -10,7 +10,7 @@ exports.handler = async function(event, context) {
         const userPrompt = requestBody.prompt;
 
         const openaiApiKey = process.env.CHATGPT_API_KEY;
-
+        console.log('Sending request to OpenAI API with prompt:', prompt);
         const response = await fetch('https://api.openai.com/v1/completions', {
             method: 'POST',
             headers: {
@@ -25,7 +25,7 @@ exports.handler = async function(event, context) {
                 temperature: 0.7
             })
         });
-
+        console.log('Received response from OpenAI API:', await response.json());
         const data = await response.json();
 
         if (data.choices && data.choices.length > 0) {

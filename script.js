@@ -139,11 +139,19 @@ async function getRephrasedPrompt(originalPrompt) {
         const responseText = await response.text();
         console.log('Raw response text:', responseText);
 
-        // Now parse it as JSON
+        // Try parsing it as JSON
         const data = JSON.parse(responseText);
+
+        // Check if there's an error message in the response
+        if (data.error) {
+            console.error('Error rephrasing the prompt:', data.error);
+            return originalPrompt;
+        }
+        
         return data.rephrasedPrompt;
     } catch (error) {
         console.error('Error rephrasing the prompt:', error);
         return originalPrompt; // Return the original prompt in case of error
     }
 }
+
