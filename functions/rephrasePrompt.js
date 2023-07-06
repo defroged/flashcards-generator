@@ -11,24 +11,21 @@ exports.handler = async function(event, context) {
 
         const openaiApiKey = process.env.CHATGPT_API_KEY;
         console.log('Sending request to OpenAI API with prompt:', userPrompt);
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${openaiApiKey}`
-    },
-    body: JSON.stringify({
-        model: 'chat-gpt-4',
-        messages: [
-            {
-                role: 'user',
-                content: userPrompt
-            }
-        ],
-        temperature: 0.7
-    })
-});
-
+        const response = await fetch('https://api.openai.com/v1/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${openaiApiKey}`
+            },
+            body: JSON.stringify({
+                model: 'text-davinci-002',
+                prompt: `Rephrase this as a specific, standard image description in a simple and cute illustration in clipart style: "${userPrompt}"`,
+                max_tokens: 50,
+                n: 1,
+                stop: null,
+                temperature: 0.7
+            })
+        });
 
         const responseData = await response.json();
         console.log('Received response from OpenAI API:', responseData);
