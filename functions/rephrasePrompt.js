@@ -19,7 +19,16 @@ exports.handler = async function(event, context) {
             },
             body: JSON.stringify({
                 model: 'text-davinci-002',
-                prompt: `Rephrase this DALL-E prompt as an image description for a simple and cute illustration in clipart style:\n\nPrompt: ${userPrompt}\n\n`,
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'You are a chatbot that can generate descriptions of simple and cute illustrations in clipart style. Rephrase the following prompt as an image description:'
+                    },
+                    {
+                        role: 'user',
+                        content: userPrompt
+                    }
+                ],
                 max_tokens: 50,
                 n: 1,
                 stop: null,
@@ -31,7 +40,7 @@ exports.handler = async function(event, context) {
         console.log('Received response from OpenAI API:', responseData);
 
         if (responseData.choices && responseData.choices.length > 0) {
-            const rephrasedPrompt = responseData.choices[0].text;
+            const rephrasedPrompt = responseData.choices[0].message.content;
             return {
                 statusCode: 200,
                 body: JSON.stringify({ rephrasedPrompt })
