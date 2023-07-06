@@ -135,7 +135,12 @@ async function getRephrasedPrompt(originalPrompt) {
             }),
         });
 
-        const data = await response.json();
+        // Log the raw response text
+        const responseText = await response.text();
+        console.log('Raw response text:', responseText);
+
+        // Now parse it as JSON
+        const data = JSON.parse(responseText);
         return data.rephrasedPrompt;
     } catch (error) {
         console.error('Error rephrasing the prompt:', error);
