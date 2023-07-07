@@ -18,13 +18,14 @@ exports.handler = async function(event, context) {
                 'Authorization': `Bearer ${openaiApiKey}`
             },
             body: JSON.stringify({
-                model: 'text-davinci-002',
-                prompt: `Rephrase this DALL-E prompt as an image description for a simple and cute illustration in clipart style:\n\nPrompt: ${userPrompt}\n\n`,
-                max_tokens: 50,
-                n: 1,
-                stop: null,
-                temperature: 0.7
-            })
+    model: 'text-davinci-002',
+    prompt: `Please rephrase the following image description, ensuring that the new description explicitly requests an image in a simple and cute clipart style:\n\n"${userPrompt}"\n\n`,
+    max_tokens: 50,
+    n: 1,
+    stop: null,
+    temperature: 0.7
+})
+
         });
 
         const responseData = await response.json();
