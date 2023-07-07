@@ -19,7 +19,8 @@ exports.handler = async function(event, context) {
             },
             body: JSON.stringify({
     model: 'text-davinci-002',
-    prompt: `Convert the following image description into a format suitable for DALL-E to generate a simple and cute clipart-style illustration:\n\nDescription: ${userPrompt}\n\n`,
+    prompt: `Rephrase the following description to be used as input for DALL-E image generation to create a simple and cute clipart-style illustration:\n\nDescription: ${userPrompt}\n\n`,
+
 
     max_tokens: 50,
     n: 1,
