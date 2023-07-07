@@ -19,12 +19,14 @@ exports.handler = async function(event, context) {
             },
             body: JSON.stringify({
     model: 'text-davinci-002',
-    prompt: `Please rephrase the following image description, ensuring that the new description explicitly requests an image in a simple and cute clipart style:\n\n"${userPrompt}"\n\n`,
+    prompt: `Create a rephrased image description that is meant to be used as a prompt for generating an illustration. The description must not contain 'I need' and must convey that the image should be a simple and cute illustration in clipart style:\n\n"${userPrompt}"\n\n`,
     max_tokens: 50,
     n: 1,
     stop: null,
-    temperature: 0.7
+    temperature: 0.2
 })
+
+
 
         });
 
