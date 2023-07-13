@@ -19,11 +19,11 @@ exports.handler = async function(event, context) {
             },
             body: JSON.stringify({
     model: 'text-davinci-002',
-    prompt: `add to the following AI image generator prompt more words to help create a more precise image. Also add the words "cute" and "in simple color pencil style": \n\n"${userPrompt}"\n\n`,
+    prompt: `add to the following AI image generator prompt the words "cute", "in simple color pencil style" and "zoomed out": \n\n"${userPrompt}"\n\n`,
     max_tokens: 50,
     n: 1,
     stop: null,
-    temperature: 0.6
+    temperature: 0.5
 })
 
 
