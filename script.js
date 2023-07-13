@@ -62,7 +62,6 @@ window.onload = function () {
             const serverResponse = await fetch(netlifyFunctionUrl);
             const serverData = await serverResponse.json();
             const objectUrl = "data:image/png;base64," + serverData.image;
-			console.log(objectUrl);
             img.src = objectUrl;
         }
 
