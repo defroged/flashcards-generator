@@ -17,7 +17,7 @@ exports.handler = async function(event, context) {
         body: JSON.stringify({
             'prompt': prompt,
             'n': 1,
-            'size': '512x512'
+            'size': '512x724'
         })
     });
 
